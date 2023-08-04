@@ -7,6 +7,10 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+Django = "^4.2.4"
+djangorestframework = "^3.14.0"
+django-debug-toolbar = "^4.1.0"
+drf-yasg = "^1.21.7"
 
 [tool.poetry.dev-dependencies]
 
