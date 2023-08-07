@@ -11,6 +11,8 @@ __all__ = [
     ProductSerializer,
 ]
 
+from carrello.services import Proxy
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
@@ -35,15 +37,8 @@ class CartViewSet(viewsets.ModelViewSet):
         """
         Aggiunge un prodotto al carrello
         """
-        # ottengo il carrello dell'utente
-        carrello = Cart.objects.get(id=kwargs["pk"])
-
-        # ottengo il prodotto e lo aggiungo al carrello
-        prodotto = Product.objects.get(id=kwargs["product_pk"])
-        carrello.products.add(prodotto, through_defaults={"quantity": 1})
-
-        # Serializzo il carrello per restituirlo come risposta
-        serializer = CartSerializer(carrello)
+        carrello = Proxy.aggiungi_elemento_a_carrello(pk=kwargs.get("pk"), product_pk=kwargs.get("product_pk"))
+        serializer = self.get_serializer_class()(carrello)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def get_queryset(self):

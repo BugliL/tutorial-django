@@ -17,6 +17,11 @@ class Categories(enum.Enum):
 categories_choices = [(tag.value, tag.value) for tag in Categories]
 
 
+class ProductManager2(models.Manager):
+    def filter(self, *args, **kwargs):
+        print('sono qui')
+        return super().filter(*args, **kwargs).filter(price__gt=0)
+
 class ProductManager(models.Manager):
     def get_total_price(self, category=None):
         # prima scrittura
@@ -39,6 +44,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     objects = ProductManager()
+    queryset2 = ProductManager2()
 
     class Meta:
         verbose_name = "Prodotto"
