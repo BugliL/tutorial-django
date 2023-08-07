@@ -66,19 +66,23 @@ Per applicare le migrazioni bisogna lanciare il comando:
 ```shell
 python manage.py migrate
 ```
+
 per tornare indietro di una migrazione bisogna lanciare il comando:
 
 ```shell
 python manage.py migrate carrello 0001
 ```
+
 dove viene specificato il nome dell'applicazione ed il numero della migrazione a cui si vuole tornare indietro.
-Nel caso si volessero annuallare tutte le migrazioni di una applicazione e ricrearle da capo bisogna lanciare il comando:
+Nel caso si volessero annuallare tutte le migrazioni di una applicazione e ricrearle da capo bisogna lanciare il
+comando:
 
 ```shell
 python manage.py migrate carrello zero
 ```
 
 Altri comandi utili per le migrazioni sono:
+
 - `showmigrations`: mostra lo stato delle migrazioni
 - `sqlmigrate`: mostra il codice sql di una migrazione
 - `migrate --fake`: applica una migrazione senza eseguire il codice sql
@@ -87,5 +91,24 @@ Altri comandi utili per le migrazioni sono:
 - `migrate --plan`: mostra le migrazioni che verranno eseguite
 - `migrate --run-syncdb`: crea le tabelle per le applicazioni che non hanno migrazioni
 
-Applicate le migrazioni e' possibile vedere le tabelle create nel database e facendo il run dell'applicazione e' possibile
+Applicate le migrazioni e' possibile vedere le tabelle create nel database e facendo il run dell'applicazione e'
+possibile
 consultare l'interfaccia swagger per vedere le api create.
+
+## Serializer
+
+Il loro obiettivo e' quello di fornire un modo semplice per serializzare e deserializzare i dati. Si collegano ai
+modelli
+e trasformano i dati in un formato che puo' essere facilmente consumato da un client.
+
+## ViewSet
+
+I ViewSet sono una classe che raggruppa le view che forniscono le operazioni CRUD per un modello. I ViewSet sono
+implementati come classi che estendono la classe `GenericViewSet` e forniscono i metodi per le operazioni CRUD.
+
+## Admin
+
+L'interfaccia di amministrazione e' un'interfaccia web che permette di gestire i dati del database.
+In questo esempio e' stata configurata per gestire i dati del modello `Carrello` e `Prodotto` usando
+un `InlineModelAdmin`: un modello che viene gestito all'interno dell'interfaccia di un altro modello in modo da non
+doversi spostare da una interfaccia all'altra.

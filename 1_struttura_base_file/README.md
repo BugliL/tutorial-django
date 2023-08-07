@@ -67,19 +67,51 @@ Le rotte sono definite come oggetti `path` o `re_path` e sono composte da due pa
   dichiarle punto per punto.
 
 ## Configurazione del modulo drf-yasg
+
 Per la documentazione delle API viene utilizzato il modulo `drf-yasg` che permette di generare automaticamente la
 documentazione delle API. Per configurarlo e' necessario aggiungere il modulo alle dipendenze del progetto
 e `registrare` l'applicazione dentro il file `settings.py`:
 
 ```python
 INSTALLED_APPS = [
-    ...
-    'drf_yasg',
-    ...
+  # ...
+  'drf_yasg',
+  # ...
 ]
 ```
 
 ed aggiungere la configurazione nel file url `urls.py`
+
+## Configurazione del modulo debug_toolbar
+
+Per il debug viene utilizzato il modulo `debug_toolbar` che permette di visualizzare le query eseguite e le variabili
+utilizzate. Per configurarlo e' necessario aggiungere il modulo alle dipendenze del progetto e `registrare`
+l'applicazione
+dentro il file `settings.py`:
+
+```python
+INSTALLED_APPS = [
+  # ...
+  'debug_toolbar',
+  # ...
+]
+```
+e deve essere aggiunto il middleware `DebugToolbarMiddleware`:
+
+```python
+MIDDLEWARE = [
+  # ...
+  'debug_toolbar.middleware.DebugToolbarMiddleware',
+  # ...
+]
+```
+Siccome il modulo e' pensato per essere utilizzato solo in fase di sviluppo, e' necessario aggiungere la configurazione
+dell'indirizzo IP del server di sviluppo:
+
+```python
+INTERNAL_IPS = [
+  '127.0.0.1',
+]
 
 ## Schema di configurazione di produzione
 
