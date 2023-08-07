@@ -1,10 +1,27 @@
+import enum
+
 from django.contrib.auth import get_user_model
 from django.db import models
+
+
+class Categories(enum.Enum):
+    GENERIC = "GENERIC"
+    FOOD = "FOOD"
+    DRINKS = "DRINKS"
+    CLOTHES = "CLOTHES"
+    ELECTRONICS = "ELECTRONICS"
+
+
+categories_choices = [(tag.value, tag.value) for tag in Categories]
 
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
+    category = models.CharField(
+        max_length=100, choices=categories_choices, blank=False, null=False,
+        default=Categories.GENERIC.value
+    )
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
