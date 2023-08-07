@@ -98,8 +98,7 @@ consultare l'interfaccia swagger per vedere le api create.
 ## Serializer
 
 Il loro obiettivo e' quello di fornire un modo semplice per serializzare e deserializzare i dati. Si collegano ai
-modelli
-e trasformano i dati in un formato che puo' essere facilmente consumato da un client.
+modelli e trasformano i dati in un formato che puo' essere facilmente consumato da un client.
 
 ## ViewSet
 
