@@ -1,10 +1,13 @@
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from rest_framework import serializers
 
-from .models import Product, CartItem, Cart
+from carrello.models import Product, CartItem, Cart
 
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.HiddenField(default="password")
+
     class Meta:
         model = get_user_model()
         fields = ('username', 'password')
@@ -14,6 +17,12 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = "__all__"
+
+
+class SimpleProductWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('id',)
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -32,11 +41,23 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(write_only=True)
+    user = UserSerializer(many=False, read_only=True)
+    products = ProductSerializer(many=True, read_only=False, required=False)
+
+    def create(self, validated_data):
+        """
+        Salva i dati che arrivano cosi'
+        {'name': 'Prodotto 2', 'description': 'Descrizione prodotto 2', 'price': 19.99}
+        """
+        products = validated_data.pop('products', [])
+        with transaction.atomic():
+            cart = Cart.objects.create(**validated_data)
+            for product_data in products:
+                product, _ = Product.objects.get_or_create(**product_data)
+                CartItem.objects.create(cart=cart, product=product)
+            return cart
+
     class Meta:
         model = Cart
         fields = "__all__"
-
-        extra_kwargs = {
-            'user': {'read_only': True},
-            'products': {'read_only': True}
-        }
