@@ -67,19 +67,29 @@ Per applicare le migrazioni bisogna lanciare il comando:
 python manage.py migrate
 ```
 
-per tornare indietro di una migrazione bisogna lanciare il comando:
+per tornare indietro ed annullare una o piu' migrazioni bisogna lanciare il comando:
 
 ```shell
 python manage.py migrate carrello 0001
 ```
 
-dove viene specificato il nome dell'applicazione ed il numero della migrazione a cui si vuole tornare indietro.
+dove viene specificato il `nome dell'applicazione` ed il `numero della migrazione` a cui si vuole tornare indietro.
 Nel caso si volessero annuallare tutte le migrazioni di una applicazione e ricrearle da capo bisogna lanciare il
 comando:
 
 ```shell
 python manage.py migrate carrello zero
 ```
+A volte capita di dover aggiustare i dati e dover fare delle migrazioni manuali. Per fare questo bisogna lanciare il
+comando apposito per creare una migrazione vuota specificando l'applicazione:
+
+```shell
+python manage.py makemigrations --empty carrello
+```
+
+Per eseguire il codice voluto ci sono a disposizione due metodi principali: `RunPython` e `RunSQL`.
+RunPython permette di eseguire del codice python mentre RunSQL permette di eseguire del codice sql puro.
+
 
 Altri comandi utili per le migrazioni sono:
 
@@ -98,8 +108,7 @@ consultare l'interfaccia swagger per vedere le api create.
 ## Serializer
 
 Il loro obiettivo e' quello di fornire un modo semplice per serializzare e deserializzare i dati. Si collegano ai
-modelli
-e trasformano i dati in un formato che puo' essere facilmente consumato da un client.
+modelli e trasformano i dati in un formato che puo' essere facilmente consumato da un client.
 
 ## ViewSet
 

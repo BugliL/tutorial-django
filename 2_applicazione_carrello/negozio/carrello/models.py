@@ -1,7 +1,9 @@
 import enum
+from _decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.functions import Coalesce
 
 
 class Categories(enum.Enum):
@@ -15,6 +17,18 @@ class Categories(enum.Enum):
 categories_choices = [(tag.value, tag.value) for tag in Categories]
 
 
+class ProductManager(models.Manager):
+    def get_total_price(self, category=None):
+        # prima scrittura
+        # return sum([product.price for product in self.filter(category=category)])
+
+        # codice rifattorizzato
+        somma_prezzo = Coalesce(models.Sum('price'), models.Value(Decimal(0.0)))
+        return self.filter(category=category) \
+            .aggregate(total_price=somma_prezzo) \
+            .get('total_price')
+
+
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -23,6 +37,8 @@ class Product(models.Model):
         default=Categories.GENERIC.value
     )
     price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    objects = ProductManager()
 
     class Meta:
         verbose_name = "Prodotto"

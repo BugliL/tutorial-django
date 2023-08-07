@@ -14,6 +14,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    total_price = serializers.SerializerMethodField()
+
+    def get_total_price(self, obj):
+        return Product.objects.get_total_price(obj.category)
+
     class Meta:
         model = Product
         fields = "__all__"
